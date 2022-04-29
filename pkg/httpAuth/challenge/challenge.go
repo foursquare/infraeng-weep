@@ -277,7 +277,11 @@ func RefreshChallenge() error {
 		openUrlCommand = []string{"cmd", "/C", "start"}
 	}
 
-	if openUrlCommand != nil {
+	var printChallengeUrl = viper.GetBool("challenge_settings.print_challenge_url")
+
+	if printChallengeUrl {
+		fmt.Printf("Please open the challenge URL in your web browser: %s\n", challenge.ChallengeURL)
+	} else if openUrlCommand != nil {
 		cmd := exec.Command(openUrlCommand[0], append(openUrlCommand[1:], challenge.ChallengeURL)...)
 		err = cmd.Start()
 		if err == nil {
