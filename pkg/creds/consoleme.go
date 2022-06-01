@@ -66,6 +66,20 @@ type Client struct {
 	Region string
 }
 
+type Role struct {
+	Arn                 string `json:"arn"`
+	AccountId           string `json:"account_id"`
+	AccountFriendlyName string `json:"account_friendly_name"`
+	RoleName            string `json:"role_name"`
+}
+
+type response struct {
+	Data 	struct {
+		Roles	[]Role
+	}
+	Status	string
+}
+
 // GetClient creates an authenticated ConsoleMe client
 func GetClient() (*Client, error) {
 	var client *Client
@@ -124,8 +138,8 @@ func (c *Client) CloseIdleConnections() {
 }
 
 // Roles returns all eligible role ARNs, using v1 of eligible roles endpoint
-func (c *Client) Roles() ([]string, error) {
-	req, err := c.buildRequest(http.MethodGet, "/get_roles", nil, "/api/v1")
+func (c *Client) Roles() ([]Role, error) {
+	req, err := c.buildRequest(http.MethodGet, "/get_roles", nil, "/api/v2")
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to build request")
 	}
@@ -149,12 +163,12 @@ func (c *Client) Roles() ([]string, error) {
 		return nil, parseError(resp.StatusCode, document)
 	}
 
-	var roles []string
-	if err := json.Unmarshal(document, &roles); err != nil {
+	var jsonData response
+	if err := json.Unmarshal(document, &jsonData); err != nil {
 		return nil, errors.Wrap(err, "failed to unmarshal JSON")
 	}
 
-	return roles, nil
+	return jsonData.Data.Roles, nil
 }
 
 // RolesExtended returns all eligible role along with additional details, using v2 of eligible roles endpoint
