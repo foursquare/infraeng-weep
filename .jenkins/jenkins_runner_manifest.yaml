@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    owner: sysops
+    app.kubernetes.io/managed-by: "jenkins"
+    app.kubernetes.io/name: "jenkins-runner-kube-manifests"
+  annotations:
+    # TODO: Combine all these into one container/dockerfile
+    dockerfile1: https://github.com/bitnami/bitnami-docker-git/blob/master/2/debian-10/Dockerfile
+    dockerfile2: https://github.com/crazy-max/xgo/blob/master/Dockerfile
+  name: "weep-build"
+spec:
+  serviceAccount: weep-builder
+  dnsConfig:
+    options:
+      - name: ndots
+        value: "1"
+  containers:
+  - name: git
+    image: bitnami/git:2.35.3
+    imagePullPolicy: IfNotPresent
+    command:
+    - cat
+    tty: true
+    resources:
+      requests:
+        cpu: 100m
+        memory: 100Mi
+      limits:
+        cpu: 300m
+        memory: 100Mi
+  - name: go
+    image: golang:1.17-bullseye
+    imagePullPolicy: IfNotPresent
+    command:
+    - cat
+    tty: true
+    resources:
+      requests:
+        cpu: 100m
+        memory: 100Mi
+      limits:
+        cpu: 300m
+        memory: 100Mi
+  - name: xgo
+    image: crazymax/xgo:1.18
+    imagePullPolicy: IfNotPresent
+    command:
+    - cat
+    tty: true
+    resources:
+      requests:
+        cpu: 100m
+        memory: 100Mi
+      limits:
+        cpu: 2
+        memory: 1Gi
+    volumeMounts:
+      - name: build
+        mountPath: /build
+  - name: aws-s3
+    image: amazon/aws-cli:2.7.13
+    imagePullPolicy: IfNotPresent
+    command:
+    - cat
+    tty: true
+    resources:
+      requests:
+        cpu: 100m
+        memory: 100Mi
+      limits:
+        cpu: 300m
+        memory: 200Mi
+    volumeMounts:
+      - name: build
+        mountPath: /build
+  volumes:
+    - name: build
+      emptyDir: {}
