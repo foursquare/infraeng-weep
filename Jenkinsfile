@@ -36,9 +36,10 @@ pipeline {
                         sh "apt update; apt install -y python3-pip; python3 -m pip install pre-commit"
                         sh "go install golang.org/x/tools/cmd/goimports@latest"
                         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                            def lintStatus = sh(returnStatus: true, script: "cd ${WORKSPACE}; pre-commit run --all-files")
+                            def lintStatus = sh(returnStatus: true, script: "cd ${WORKSPACE}; pre-commit run --all-files | tee ${WORKSPACE}/pre-commit.out")
                             def lintOut = readFile("${WORKSPACE}/pre-commit.out")
                             output = """Go tests build result: \n``` ${lintOut} ```"""
+                            sh "echo ${lintStatus}"
                             if (lintStatus != 0) {
                                 FAIL_STATUS = true
                                 throw new Exception("Nonzero Exit. Test Failure.")
@@ -49,6 +50,11 @@ pipeline {
             }
         }
         stage('xgo-build') {
+            when {
+                expression {
+                    ! env.CHANGE_ID
+                }
+            }
             steps {
                 container('xgo') {
                     script {
@@ -65,6 +71,11 @@ pipeline {
             }
         }
         stage('upload') {
+            when {
+                expression {
+                    ! env.CHANGE_ID
+                }
+            }
             steps {
                 container('aws-s3') {
                     script {
@@ -76,6 +87,9 @@ pipeline {
         stage('make-latest') {
             when {
                 branch 'release'
+                expression {
+                    ! env.CHANGE_ID
+                }
             }
             steps {
                 container('aws-s3') {
@@ -95,9 +109,9 @@ pipeline {
                 }
                 if (env.CHANGE_ID) {
                     if (FAIL_STATUS == true) {
-                        output += "\n:x:"
+                        output += """\n:x:"""
                     } else {
-                        output += "\n:white_check_mark:"
+                        output += """\n:white_check_mark:"""
                     }
                     pullRequest.comment(output)
                 }
