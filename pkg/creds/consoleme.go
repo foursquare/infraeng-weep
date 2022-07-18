@@ -74,10 +74,10 @@ type Role struct {
 }
 
 type response struct {
-	Data 	struct {
-		Roles	[]Role
+	Data struct {
+		Roles []Role
 	}
-	Status	string
+	Status string
 }
 
 // GetClient creates an authenticated ConsoleMe client
