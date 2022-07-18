@@ -36,10 +36,10 @@ pipeline {
                         sh "apt update; apt install -y python3-pip; python3 -m pip install pre-commit"
                         sh "go install golang.org/x/tools/cmd/goimports@latest"
                         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                            def lintStatus = sh(returnStatus: true, script: "cd ${WORKSPACE}; pre-commit run --all-files | tee ${WORKSPACE}/pre-commit.out")
-                            def lintOut = readFile("${WORKSPACE}/pre-commit.out")
-                            output = """Go tests build result: \n``` ${lintOut} ```"""
-                            sh "echo ${lintStatus}"
+                            // have to capture the exit 1 so the stage doesn't fail before the rest of the steps
+                            def lintOut = sh(returnStdout: true, script: "cd \${WORKSPACE}; pre-commit run --all-files && echo \$? > \${WORKSPACE}/pre-commit.out || echo \$? > \${WORKSPACE}/pre-commit.out")
+                            def lintStatus = readFile("${WORKSPACE}/pre-commit.out")
+                            output = """Go tests build result: \n```\n${lintOut}```\n"""
                             if (lintStatus != 0) {
                                 FAIL_STATUS = true
                                 throw new Exception("Nonzero Exit. Test Failure.")
