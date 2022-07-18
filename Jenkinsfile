@@ -37,10 +37,10 @@ pipeline {
                         sh "go install golang.org/x/tools/cmd/goimports@latest"
                         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                             // have to capture the exit 1 so the stage doesn't fail before the rest of the steps
-                            def lintOut = sh(returnStdout: true, script: "cd \${WORKSPACE}; pre-commit run --all-files && echo \$? > \${WORKSPACE}/pre-commit.out || echo \$? > \${WORKSPACE}/pre-commit.out")
+                            def lintOut = sh(returnStdout: true, script: "cd \${WORKSPACE}; pre-commit run --all-files && echo -n \$? > \${WORKSPACE}/pre-commit.out || echo -n \$? > \${WORKSPACE}/pre-commit.out")
                             def lintStatus = readFile("${WORKSPACE}/pre-commit.out")
                             output = """Go tests build result: \n```\n${lintOut}```\n"""
-                            if (lintStatus != 0) {
+                            if (lintStatus != "0") {
                                 FAIL_STATUS = true
                                 throw new Exception("Nonzero Exit. Test Failure.")
                             }
