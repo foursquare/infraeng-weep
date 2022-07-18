@@ -19,8 +19,8 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 	"strings"
+	"time"
 
 	"github.com/sirupsen/logrus"
 
