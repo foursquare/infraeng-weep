@@ -1,23 +1,23 @@
-## weep export
+## weep console
 
-Retrieve credentials to be exported as environment variables
+Log into the AWS Management console
 
 ### Synopsis
 
-The export command retrieves credentials for a role and prints a shell command to export 
-the credentials to environment variables.
-
-More information: https://hawkins.gitbook.io/consoleme/weep-cli/commands/credential-export
+The login command opens a browser window with a link that will log you into the
+AWS Management console using the specified role. You can use the --no-open flag to simply print the console
+link, rather than opening it in a browser.
 
 
 ```
-weep export [role_name] [flags]
+weep console [flags]
 ```
 
 ### Options
 
 ```
-  -h, --help   help for export
+  -h, --help      help for console
+  -x, --no-open   print the link, but do not open a browser window
 ```
 
 ### Options inherited from parent commands
