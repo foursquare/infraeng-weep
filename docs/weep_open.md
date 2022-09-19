@@ -1,23 +1,23 @@
-## weep export
+## weep open
 
-Retrieve credentials to be exported as environment variables
+Generate (and open) a ConsoleMe link for a given ARN
 
 ### Synopsis
 
-The export command retrieves credentials for a role and prints a shell command to export 
-the credentials to environment variables.
-
-More information: https://hawkins.gitbook.io/consoleme/weep-cli/commands/credential-export
+The open command generates the link for supported resources in ConsoleMe. By default, this command 
+also attempts to open the browser after generating the link. Use the --no-open flag to prevent opening. 
+The supported resources match those that are supported by ConsoleMe. IAM roles, s3, sqs and sns resources open in the ConsoleMe editor, while other supported resources attempt to redirect to the AWS Console using the right role.
 
 
 ```
-weep export [role_name] [flags]
+weep open <arn> [flags]
 ```
 
 ### Options
 
 ```
-  -h, --help   help for export
+  -h, --help      help for open
+  -x, --no-open   don't automatically open links
 ```
 
 ### Options inherited from parent commands

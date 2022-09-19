@@ -1,23 +1,21 @@
-## weep export
+## weep whoami
 
-Retrieve credentials to be exported as environment variables
+Print information about current AWS credentials
 
 ### Synopsis
 
-The export command retrieves credentials for a role and prints a shell command to export 
-the credentials to environment variables.
-
-More information: https://hawkins.gitbook.io/consoleme/weep-cli/commands/credential-export
-
+The whoami command retrieves information about your AWS credentials from AWS STS using the default
+credential provider chain. If SWAG (https://github.com/Netflix-Skunkworks/swag-api) is enabled, weep will
+attempt to enrich the output with additional data.
 
 ```
-weep export [role_name] [flags]
+weep whoami [flags]
 ```
 
 ### Options
 
 ```
-  -h, --help   help for export
+  -h, --help   help for whoami
 ```
 
 ### Options inherited from parent commands

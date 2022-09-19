@@ -17,6 +17,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"path"
 	"path/filepath"
@@ -55,13 +56,18 @@ func init() {
 }
 
 func getDefaultLogFile() string {
+	user := os.Getenv("USER")
+	logFile := "weep.log"
+	if user != "" {
+		logFile = fmt.Sprintf("%s.log", user)
+	}
 	switch os := runtime.GOOS; os {
 	case "darwin":
-		return filepath.Join("/", "tmp", "weep.log")
+		return filepath.Join("/", "tmp", "weep", logFile)
 	case "linux":
-		return filepath.Join("/", "tmp", "weep.log")
+		return filepath.Join("/", "tmp", "weep", logFile)
 	case "windows":
-		p, _ := filepath.Abs(filepath.FromSlash("/programdata/weep/weep.log"))
+		p, _ := filepath.Abs(filepath.FromSlash(fmt.Sprintf("/programdata/weep/%s", logFile)))
 		return p
 	default:
 		return ""
