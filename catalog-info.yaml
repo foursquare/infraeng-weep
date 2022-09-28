@@ -5,7 +5,7 @@ metadata:
   name: weep
   description: command line interface component of consoleme that provides authentication credentials for AWS
   annotations:
-    backstage.io/techdocs-ref: dir:docs
+    backstage.io/techdocs-ref: dir:.
     jenkins.io/job-full-name: Foursquare Github/infraeng-weep
     github.com/project-slug: foursquare/infraeng-weep
 spec:
