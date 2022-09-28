@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: weep
+  description: command line interface component of consoleme that provides authentication credentials for AWS
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    jenkins.io/job-full-name: Foursquare Github/infraeng-weep
+    github.com/project-slug: foursquare/infraeng-weep
+spec:
+  type: service
+  lifecycle: production
+  owner: team:infra-eng
+  system: consoleme
+  dependsOn:
+  - component:consoleme
