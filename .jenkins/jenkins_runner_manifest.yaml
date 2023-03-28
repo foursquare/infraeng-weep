@@ -18,7 +18,7 @@ spec:
         value: "1"
   containers:
   - name: git
-    image: bitnami/git:2.35.3
+    image: imgcache.k8s.foursquare.com/bitnami/git:2.35.3
     imagePullPolicy: IfNotPresent
     command:
     - cat
@@ -31,7 +31,7 @@ spec:
         cpu: 300m
         memory: 100Mi
   - name: go
-    image: golang:1.17-bullseye
+    image: imgcache.k8s.foursquare.com/golang:1.17-bullseye
     imagePullPolicy: IfNotPresent
     command:
     - cat
@@ -44,7 +44,7 @@ spec:
         cpu: 2
         memory: 4Gi
   - name: xgo
-    image: crazymax/xgo:1.18
+    image: imgcache.k8s.foursquare.com/crazymax/xgo:1.18
     imagePullPolicy: IfNotPresent
     command:
     - cat
@@ -60,7 +60,7 @@ spec:
       - name: build
         mountPath: /build
   - name: aws-s3
-    image: amazon/aws-cli:2.7.13
+    image: imgcache.k8s.foursquare.com/amazon/aws-cli:2.7.13
     imagePullPolicy: IfNotPresent
     command:
     - cat
