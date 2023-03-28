@@ -39,10 +39,7 @@ spec:
     resources:
       requests:
         cpu: 2
-        memory: 4Gi
-      limits:
-        cpu: 2
-        memory: 4Gi
+        memory: 8Gi
   - name: xgo
     image: imgcache.k8s.foursquare.com/crazymax/xgo:1.18
     imagePullPolicy: IfNotPresent
