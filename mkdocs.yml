@@ -1,8 +1,0 @@
-site_name: 'Weep Documentation'
-
-nav:
-  - introduction: README.md
-  - docs: docs/
-
-plugins:
-  - techdocs-core
